@@ -1,0 +1,21 @@
+{
+  "name": "template-chatgpt-project",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Reusable Git repository template for managing long-term ChatGPT Project context.",
+  "packageManager": "yarn@1.22.22",
+  "scripts": {
+    "format": "prettier --write .",
+    "check:format": "prettier --check .",
+    "lint:md": "markdownlint-cli2 \"**/*.md\" \"!node_modules\"",
+    "validate:sources": "node scripts/validate-sources.js",
+    "build:upload-bundle": "node scripts/build-upload-bundle.js",
+    "check": "yarn check:format && yarn lint:md && yarn validate:sources"
+  },
+  "devDependencies": {
+    "gray-matter": "^4.0.3",
+    "markdownlint-cli2": "^0.17.2",
+    "prettier": "^3.8.3"
+  }
+}

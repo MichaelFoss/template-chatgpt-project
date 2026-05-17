@@ -41,8 +41,16 @@ yarn check
 yarn build:upload-bundle
 ```
 
-Then upload the selected source files, or the generated upload bundle,
-to the ChatGPT Project.
+The build step generates:
+
+- `dist/chatgpt-upload-bundle.md`
+- `dist/upload-files/`
+
+Upload the individual files from `dist/upload-files/` into the ChatGPT
+Project.
+
+The single bundle file exists primarily for auditing, portability, and
+reference workflows.
 
 ## Required Files
 

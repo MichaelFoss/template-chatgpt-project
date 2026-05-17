@@ -6,6 +6,7 @@ const sourceDir = path.resolve('sources');
 const outputDir = path.resolve('dist');
 
 const outputFile = path.join(outputDir, 'chatgpt-upload-bundle.md');
+const uploadFilesDir = path.join(outputDir, 'upload-files');
 
 function demoteAtxHeadings(content, levels = 2) {
   return content.replace(/^(#{1,6})\s+/gm, (match, hashes) => {
@@ -95,10 +96,22 @@ async function main() {
     .join('\n')
     .trimEnd();
 
+  await fs.rm(uploadFilesDir, { recursive: true, force: true });
+  await fs.mkdir(uploadFilesDir, { recursive: true });
+
+  for (const item of included) {
+    const relativePath = path.relative(sourceDir, item.file);
+    const destinationPath = path.join(uploadFilesDir, relativePath);
+
+    await fs.mkdir(path.dirname(destinationPath), { recursive: true });
+    await fs.copyFile(item.file, destinationPath);
+  }
+
   await fs.mkdir(outputDir, { recursive: true });
   await fs.writeFile(outputFile, `${bundle}\n`, 'utf8');
 
   console.log(`Wrote ${outputFile}`);
+  console.log(`Copied upload files to ${uploadFilesDir}`);
   console.log(`Included ${included.length} source document(s).`);
 }
 

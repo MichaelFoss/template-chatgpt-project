@@ -37,3 +37,18 @@ specifically required.
 
 The ChatGPT Project should be refreshed after meaningful source document
 changes are committed to Git.
+
+The upload workflow is generated deterministically from source document
+metadata.
+
+Use:
+
+```bash
+yarn build:upload-bundle
+```
+
+Then upload files from:
+
+```text
+dist/upload-files/
+```

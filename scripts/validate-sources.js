@@ -4,9 +4,20 @@ import matter from 'gray-matter';
 
 const sourceDir = path.resolve('sources');
 
-const requiredFields = ['title', 'status', 'last_updated', 'upload_to_chatgpt'];
+const requiredFields = [
+  'title',
+  'status',
+  'last_updated',
+  'upload_to_chatgpt',
+];
 
-const allowedStatuses = new Set(['current', 'living', 'historical', 'superseded', 'draft']);
+const allowedStatuses = new Set([
+  'current',
+  'living',
+  'historical',
+  'superseded',
+  'draft',
+]);
 
 async function getMarkdownFiles(dir) {
   const entries = await fs.readdir(dir, { withFileTypes: true });
@@ -38,11 +49,17 @@ function validateFile(filePath, content) {
     }
   }
 
-  if (typeof parsed.data.status === 'string' && !allowedStatuses.has(parsed.data.status)) {
+  if (
+    typeof parsed.data.status === 'string' &&
+    !allowedStatuses.has(parsed.data.status)
+  ) {
     errors.push(`Invalid status: ${parsed.data.status}`);
   }
 
-  if ('upload_to_chatgpt' in parsed.data && typeof parsed.data.upload_to_chatgpt !== 'boolean') {
+  if (
+    'upload_to_chatgpt' in parsed.data &&
+    typeof parsed.data.upload_to_chatgpt !== 'boolean'
+  ) {
     errors.push('upload_to_chatgpt must be boolean');
   }
 

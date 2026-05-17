@@ -1,6 +1,7 @@
 # Archive
 
-This directory contains historical, raw, superseded, or snapshot material.
+This directory contains historical, raw, superseded, or snapshot
+material.
 
 Archive material should not be treated as current by default.
 
@@ -13,5 +14,6 @@ Archive material should not be treated as current by default.
 ## Rules
 
 - Do not upload archive material to ChatGPT by default.
-- Do not use archive material as current context unless explicitly instructed.
+- Do not use archive material as current context unless explicitly
+  instructed.
 - Preserve meaningful historical context when moving files here.

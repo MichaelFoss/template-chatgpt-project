@@ -7,7 +7,8 @@ upload_to_chatgpt: true
 
 # Source Document Index
 
-This file defines which source documents should be uploaded to the ChatGPT Project.
+This file defines which source documents should be uploaded to the
+ChatGPT Project.
 
 ## Default Upload Set
 
@@ -29,8 +30,10 @@ Do not upload these directories by default:
 
 ## Upload Only When Needed
 
-Upload archived or raw material only when historical context is specifically required.
+Upload archived or raw material only when historical context is
+specifically required.
 
 ## Upload Notes
 
-The ChatGPT Project should be refreshed after meaningful source document changes are committed to Git.
+The ChatGPT Project should be refreshed after meaningful source document
+changes are committed to Git.

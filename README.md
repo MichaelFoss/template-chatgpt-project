@@ -1,12 +1,15 @@
 # ChatGPT Project Template
 
-A lightweight Git-based template for managing long-term ChatGPT Project context.
+A lightweight Git-based template for managing long-term ChatGPT Project
+context.
 
 ## Purpose
 
 This repository is the canonical source of truth for a ChatGPT Project.
 
-The goal is to keep ChatGPT Project Instructions small and stable while storing durable factual context in curated source documents that can be uploaded to the ChatGPT Project.
+The goal is to keep ChatGPT Project Instructions small and stable while
+storing durable factual context in curated source documents that can be
+uploaded to the ChatGPT Project.
 
 ## Operating Model
 
@@ -21,10 +24,13 @@ The goal is to keep ChatGPT Project Instructions small and stable while storing 
 
 The actual ChatGPT Project should use:
 
-1. `instructions/project-instructions.copyable.md` as the Project Instructions.
-2. Selected files from `sources/`, as listed in `sources/index.md`, as uploaded source documents.
+1. `instructions/project-instructions.copyable.md` as the Project
+   Instructions.
+2. Selected files from `sources/`, as listed in `sources/index.md`, as
+   uploaded source documents.
 
-Git remains the source of truth. Uploaded ChatGPT files are derived runtime context.
+Git remains the source of truth. Uploaded ChatGPT files are derived
+runtime context.
 
 ## Required Workflow
 
@@ -35,7 +41,8 @@ yarn check
 yarn build:upload-bundle
 ```
 
-Then upload the selected source files, or the generated upload bundle, to the ChatGPT Project.
+Then upload the selected source files, or the generated upload bundle,
+to the ChatGPT Project.
 
 ## Required Files
 
@@ -64,5 +71,6 @@ Then upload the selected source files, or the generated upload bundle, to the Ch
 
 Projects created from this template are independent repositories.
 
-This template provides a starting structure, not an ongoing inheritance model. If the
-template improves later, copy or cherry-pick useful changes manually.
+This template provides a starting structure, not an ongoing inheritance
+model. If the template improves later, copy or cherry-pick useful
+changes manually.

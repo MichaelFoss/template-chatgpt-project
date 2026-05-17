@@ -6,7 +6,8 @@ Use this prompt before refreshing files in a ChatGPT Project.
 
 ## Prompt
 
-You are helping prepare a ChatGPT Project upload bundle from a Git-based context repository.
+You are helping prepare a ChatGPT Project upload bundle from a Git-based
+context repository.
 
 Review:
 

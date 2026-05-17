@@ -2,7 +2,8 @@
 
 ## Purpose
 
-Use this prompt when new durable information should be incorporated into a source document.
+Use this prompt when new durable information should be incorporated into
+a source document.
 
 ## Prompt
 

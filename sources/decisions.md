@@ -15,7 +15,8 @@ This document records durable project decisions.
 
 The Git repository is the maintained source of truth.
 
-The ChatGPT Project consumes selected files from this repository, but uploaded files are treated as derived runtime context.
+The ChatGPT Project consumes selected files from this repository, but
+uploaded files are treated as derived runtime context.
 
 ### 2026-05-16: Keep Project Instructions Small
 
@@ -25,11 +26,13 @@ Durable factual context belongs in `sources/`.
 
 ### 2026-05-16: Use Markdown Source Documents
 
-Markdown is the default format for curated project context because it is diffable, readable, and easy to maintain.
+Markdown is the default format for curated project context because it is
+diffable, readable, and easy to maintain.
 
 ### 2026-05-16: Use JavaScript Scripts with ES Modules
 
-Repository automation should use `.js` files with ES modules instead of shell scripts.
+Repository automation should use `.js` files with ES modules instead of
+shell scripts.
 
 ### 2026-05-16: Use Yarn
 

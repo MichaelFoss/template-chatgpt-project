@@ -11,11 +11,14 @@ upload_to_chatgpt: true
 
 This living document summarizes the current state of the project.
 
-For a new project created from this template, replace this content with the current durable context that ChatGPT should know.
+For a new project created from this template, replace this content with
+the current durable context that ChatGPT should know.
 
 ## Current Summary
 
-This repository is a reusable template for managing long-term ChatGPT Project context using Git, Markdown, curated source documents, reusable prompts, and small stable project instructions.
+This repository is a reusable template for managing long-term ChatGPT
+Project context using Git, Markdown, curated source documents, reusable
+prompts, and small stable project instructions.
 
 ## Current Operating Model
 
@@ -35,4 +38,5 @@ This repository is a reusable template for managing long-term ChatGPT Project co
 
 - Do not assume archived material is current.
 - Do not assume prompts contain canonical facts.
-- Do not assume ChatGPT Project uploads are newer than the Git repository.
+- Do not assume ChatGPT Project uploads are newer than the Git
+  repository.

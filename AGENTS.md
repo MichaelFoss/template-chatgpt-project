@@ -2,9 +2,11 @@
 
 ## Role
 
-This repository maintains curated source documents for a long-term ChatGPT Project.
+This repository maintains curated source documents for a long-term
+ChatGPT Project.
 
-AI agents should help maintain structure, consistency, clarity, and retrieval usefulness.
+AI agents should help maintain structure, consistency, clarity, and
+retrieval usefulness.
 
 ## Core Rules
 

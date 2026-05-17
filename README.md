@@ -32,6 +32,21 @@ The actual ChatGPT Project should use:
 Git remains the source of truth. Uploaded ChatGPT files are derived
 runtime context.
 
+## ⚠️ Upload Client Warning
+
+As of May 2026, the ChatGPT macOS desktop client may successfully upload
+source files while failing to make their contents retrievable/indexable
+inside ChatGPT Projects.
+
+The files may appear in the Project UI, but ChatGPT may be unable to
+search or read their contents.
+
+For reliable uploads, use the ChatGPT web application in a browser when
+uploading source files to a ChatGPT Project.
+
+After uploading files, verify retrieval by asking ChatGPT to quote or
+search for a known unique phrase from one of the uploaded files.
+
 ## Required Workflow
 
 After editing source documents:

@@ -2,7 +2,7 @@
 title: Glossary
 status: current
 last_updated: 2026-05-16
-upload_to_chatgpt: true
+upload_to_chatgpt: false
 ---
 
 # Glossary

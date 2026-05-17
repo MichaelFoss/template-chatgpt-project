@@ -10,7 +10,7 @@
     "check:format": "prettier --check .",
     "lint:md": "markdownlint-cli2 \"**/*.md\" \"!node_modules\"",
     "validate:sources": "node scripts/validate-sources.js",
-    "build:upload-bundle": "node scripts/build-upload-bundle.js",
+    "build": "node scripts/build.js",
     "check": "yarn check:format && yarn lint:md && yarn validate:sources",
     "prepare": "husky"
   },

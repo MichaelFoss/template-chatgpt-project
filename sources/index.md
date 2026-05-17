@@ -2,7 +2,7 @@
 title: Source Document Index
 status: current
 last_updated: 2026-05-16
-upload_to_chatgpt: true
+upload_to_chatgpt: false
 ---
 
 # Source Document Index
@@ -14,10 +14,7 @@ ChatGPT Project.
 
 Upload these files for normal project use:
 
-- `sources/index.md`
 - `sources/current-state.md`
-- `sources/decisions.md`
-- `sources/glossary.md`
 
 ## Do Not Upload By Default
 

@@ -66,6 +66,15 @@ async function main() {
   await validateRepositoryRoot({ commandName: 'Restore build' });
 
   const latestBuildTag = await getLatestBuildTag();
+
+  if (latestBuildTag === null) {
+    console.error(
+      'Restore build aborted: no `build-*` Git tags exist yet. Run `yarn build` first.',
+    );
+
+    process.exit(1);
+  }
+
   const included = await attachBuildTagsToItems(
     await getBuildableSourceDocuments(),
     latestBuildTag,

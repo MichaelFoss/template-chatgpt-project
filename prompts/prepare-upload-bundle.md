@@ -43,11 +43,11 @@ updated:
 dist/project-instructions.md
 ```
 
-If ignored `dist/` artifacts need to be recreated without creating a new
+If generated build artifacts need to be restored without creating a new
 build tag, use:
 
 ```bash
-yarn dist
+yarn restore-build
 ```
 
 ## Prompt

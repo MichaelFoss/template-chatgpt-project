@@ -124,13 +124,13 @@ When updating uploaded ChatGPT Project source files:
 1. delete the prior versioned uploaded file from the ChatGPT Project
 2. upload the newly generated versioned file
 
-To regenerate `dist/` artifacts without creating a new build tag:
+To restore generated build artifacts without creating a new build tag:
 
 ```bash
-yarn dist
+yarn restore-build
 ```
 
-The `dist` workflow:
+The restore-build workflow:
 
 - recreates generated upload artifacts from current repository state
 - inspects existing `build-*` Git tags without creating new ones

@@ -101,14 +101,14 @@ When replacing uploaded ChatGPT Project sources:
 1. delete the older versioned upload file from the ChatGPT Project
 2. upload the newly generated versioned file
 
-To regenerate `dist/` artifacts without creating a new build tag:
+To restore generated build artifacts without creating a new build tag:
 
 ```bash
-yarn dist
+yarn restore-build
 ```
 
-The `dist` workflow recreates upload artifacts using the most recent
-build tag associated with each uploadable source file.
+The restore-build workflow recreates upload artifacts using the most
+recent build tag associated with each uploadable source file.
 
 The template repository itself primarily provides the workflow,
 documentation, and tooling. Downstream repositories created from this

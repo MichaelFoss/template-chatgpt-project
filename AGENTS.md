@@ -60,8 +60,8 @@ Reusable maintenance workflows.
 Examples:
 
 - update a source document
-- prepare upload bundle
-- regenerate dist artifacts
+- audit upload build
+- restore build artifacts
 - reconcile conflicts
 - audit stale context
 
@@ -91,7 +91,7 @@ Examples:
 Rules:
 
 - Do not manually edit generated `dist/` artifacts.
-- Recreate `dist/` artifacts using repository scripts.
+- Restore generated build artifacts using repository scripts.
 - Generated upload filenames intentionally include build tags.
 - Git source filenames remain stable.
 - Upload versioned files from `dist/uploads/` into ChatGPT Projects.

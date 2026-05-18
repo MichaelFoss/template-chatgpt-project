@@ -68,8 +68,11 @@ Example:
 baseball-cards.build-2026-05-17-0003.md
 ```
 
-To regenerate `dist/` artifacts without creating a new build tag:
+To restore generated build artifacts without creating a new build tag:
 
 ```bash
-yarn dist
+yarn restore-build
 ```
+
+The restore-build workflow restores generated upload artifacts using the
+most recent build tag associated with each uploadable source file.

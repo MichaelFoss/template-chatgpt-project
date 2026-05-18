@@ -263,6 +263,11 @@ async function main() {
   console.log(
     `- ${path.relative(process.cwd(), uploadInstructionsFile)}`,
   );
+
+  console.log('');
+  console.log(
+    "Consider publishing build tags by running 'yarn publish-build-tags'",
+  );
 }
 
 main().catch((error) => {

@@ -12,6 +12,7 @@
     "validate:sources": "node scripts/validate-sources.js",
     "build": "node scripts/build.js",
     "restore-build": "node scripts/restore-build.js",
+    "publish-build-tags": "node scripts/publish-build-tags.js",
     "check": "yarn check:format && yarn lint:md && yarn validate:sources",
     "prepare": "husky"
   },

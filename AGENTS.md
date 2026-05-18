@@ -19,6 +19,11 @@ retrieval usefulness.
 - Prefer small, focused edits.
 - Keep ChatGPT Project Instructions short.
 - Keep source documents retrieval-friendly.
+- Treat generated upload files in `dist/uploads/` as immutable runtime
+  artifacts.
+- Preserve build-tag provenance in generated upload filenames.
+- Do not manually rename generated upload files.
+- Do not manually edit generated `dist/` artifacts.
 - Add changelog entries for meaningful structural or factual updates.
 
 ## Directory Rules
@@ -56,6 +61,7 @@ Examples:
 
 - update a source document
 - prepare upload bundle
+- regenerate dist artifacts
 - reconcile conflicts
 - audit stale context
 
@@ -70,6 +76,25 @@ Do not assume anything in `archive/` is current.
 Reusable file patterns.
 
 Do not treat templates as project facts.
+
+### `dist/`
+
+Generated runtime artifacts.
+
+Examples:
+
+- versioned upload files
+- upload instructions
+- generated project instructions
+- upload bundle snapshots
+
+Rules:
+
+- Do not manually edit generated `dist/` artifacts.
+- Recreate `dist/` artifacts using repository scripts.
+- Generated upload filenames intentionally include build tags.
+- Git source filenames remain stable.
+- Upload versioned files from `dist/uploads/` into ChatGPT Projects.
 
 ## Markdown Standards
 

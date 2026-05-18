@@ -36,16 +36,40 @@ The ChatGPT Project should be refreshed after meaningful source document
 changes are committed to Git.
 
 The upload workflow is generated deterministically from source document
-metadata.
+metadata and Git build tags.
 
-Use:
+For normal source updates:
 
 ```bash
-yarn build:upload-bundle
+yarn check
+git add .
+git commit -m "Describe the source update"
+yarn build
 ```
 
-Then upload files from:
+Then follow:
 
 ```text
-dist/upload-files/
+dist/upload-instructions.md
+```
+
+Generated upload files are copied to:
+
+```text
+dist/uploads/
+```
+
+Generated upload filenames include the build tag where the source file
+last changed.
+
+Example:
+
+```text
+baseball-cards.build-2026-05-17-0003.md
+```
+
+To regenerate `dist/` artifacts without creating a new build tag:
+
+```bash
+yarn dist
 ```

@@ -26,8 +26,8 @@ The actual ChatGPT Project should use:
 
 1. `instructions/project-instructions.copyable.md` as the Project
    Instructions.
-2. Selected files from `sources/`, as listed in `sources/index.md`, as
-   uploaded source documents.
+2. Generated files from `dist/uploads/`, created by the build workflow,
+   as uploaded source documents.
 
 Git remains the source of truth. Uploaded ChatGPT files are derived
 runtime context.
@@ -49,23 +49,70 @@ search for a known unique phrase from one of the uploaded files.
 
 ## Required Workflow
 
-After editing source documents:
+For normal source updates:
 
 ```bash
 yarn check
-yarn build:upload-bundle
+git add .
+git commit -m "Describe the source update"
+yarn build
 ```
 
-The build step generates:
+Then follow:
 
-- `dist/chatgpt-upload-bundle.md`
-- `dist/upload-files/`
+```text
+dist/upload-instructions.md
+```
 
-Upload the individual files from `dist/upload-files/` into the ChatGPT
-Project.
+The build workflow:
 
-The single bundle file exists primarily for auditing, portability, and
-reference workflows.
+- requires a clean Git working tree
+- must be run from the repository root
+- creates a `build-YYYY-MM-DD-NNNN` Git tag when upload-impacting
+  changes are detected
+- skips rebuilding if `HEAD` already has a build tag
+- skips build creation when no upload-impacting files changed
+- copies changed uploadable source files into `dist/uploads/`
+- appends build tags to generated upload filenames
+- copies project instructions into `dist/project-instructions.md` when
+  required
+- generates `dist/upload-instructions.md` describing exactly what must
+  be uploaded to ChatGPT
+- generates `dist/chatgpt-upload-bundle.md` for auditing, portability,
+  and reference workflows
+
+Generated upload filenames intentionally include the build tag where the
+source file last changed.
+
+Example:
+
+```text
+baseball-cards.build-2026-05-17-0003.md
+```
+
+Git source filenames remain stable:
+
+```text
+sources/baseball-cards.md
+```
+
+When replacing uploaded ChatGPT Project sources:
+
+1. delete the older versioned upload file from the ChatGPT Project
+2. upload the newly generated versioned file
+
+To regenerate `dist/` artifacts without creating a new build tag:
+
+```bash
+yarn dist
+```
+
+The `dist` workflow recreates upload artifacts using the most recent
+build tag associated with each uploadable source file.
+
+The template repository itself primarily provides the workflow,
+documentation, and tooling. Downstream repositories created from this
+template are the deployable/runtime projects.
 
 ## Required Files
 

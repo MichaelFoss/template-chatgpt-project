@@ -41,6 +41,8 @@ Use:
 - `dist/upload-instructions.md` as the operational upload checklist.
 - `sources/index.md` to determine which source files are eligible for
   upload.
+- generated files from `dist/uploads/` as the actual uploaded ChatGPT
+  Project runtime sources.
 
 Upload only curated source documents intended for runtime retrieval.
 
@@ -89,6 +91,9 @@ A successful `yarn build`:
 - skips rebuilding when `HEAD` already has a build tag
 - skips build creation when no upload-impacting files changed
 - copies changed uploadable source files into `dist/uploads/`
+- appends build tags to generated upload filenames
+- uses immutable generated upload filenames to preserve runtime
+  provenance
 - copies project instructions into `dist/project-instructions.md` only
   when required
 - writes operational upload instructions into
@@ -98,6 +103,41 @@ A successful `yarn build`:
 
 If no upload-impacting files changed since the prior build tag, no new
 build tag is created.
+
+Generated upload filenames intentionally include the build tag where the
+source file last changed.
+
+Example generated upload filename:
+
+```text
+baseball-cards.build-2026-05-17-0003.md
+```
+
+Stable Git source filename:
+
+```text
+sources/baseball-cards.md
+```
+
+When updating uploaded ChatGPT Project source files:
+
+1. delete the prior versioned uploaded file from the ChatGPT Project
+2. upload the newly generated versioned file
+
+To regenerate `dist/` artifacts without creating a new build tag:
+
+```bash
+yarn dist
+```
+
+The `dist` workflow:
+
+- recreates generated upload artifacts from current repository state
+- inspects existing `build-*` Git tags without creating new ones
+- restores per-file build provenance in generated upload filenames
+- recreates `dist/upload-instructions.md`
+- recreates `dist/project-instructions.md`
+- recreates `dist/chatgpt-upload-bundle.md`
 
 ## Default Upload Policy
 

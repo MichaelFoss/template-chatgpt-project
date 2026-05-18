@@ -192,11 +192,24 @@ function toProjectPath(filePath) {
   return path.relative(process.cwd(), filePath);
 }
 
-function toUploadPath(filePath) {
+function addBuildTagToFilename(filePath, buildTag) {
+  const directory = path.dirname(filePath);
+  const extension = path.extname(filePath);
+  const basename = path.basename(filePath, extension);
+  const filename = `${basename}.${buildTag}${extension}`;
+
+  if (directory === '.') {
+    return filename;
+  }
+
+  return path.join(directory, filename);
+}
+
+function toUploadPath(filePath, buildTag) {
   return path.join(
     'dist',
     'uploads',
-    path.relative(sourceDir, filePath),
+    addBuildTagToFilename(path.relative(sourceDir, filePath), buildTag),
   );
 }
 
@@ -258,7 +271,7 @@ function buildUploadInstructions({
   isFirstBuild,
 }) {
   const changedUploadPaths = changedBuildableItems.map((item) =>
-    toUploadPath(item.file),
+    toUploadPath(item.file, buildTag),
   );
 
   return [
@@ -307,13 +320,14 @@ function buildUploadInstructions({
     .trimEnd();
 }
 
-async function copyUploadFiles(items) {
+async function copyUploadFiles({ items, buildTag }) {
   await fs.rm(uploadsDir, { recursive: true, force: true });
   await fs.mkdir(uploadsDir, { recursive: true });
 
   for (const item of items) {
     const relativePath = path.relative(sourceDir, item.file);
-    const destinationPath = path.join(uploadsDir, relativePath);
+    const versionedPath = addBuildTagToFilename(relativePath, buildTag);
+    const destinationPath = path.join(uploadsDir, versionedPath);
 
     await fs.mkdir(path.dirname(destinationPath), { recursive: true });
     await fs.copyFile(item.file, destinationPath);
@@ -404,7 +418,10 @@ async function main() {
   });
 
   await fs.mkdir(outputDir, { recursive: true });
-  await copyUploadFiles(changedBuildableItems);
+  await copyUploadFiles({
+    items: changedBuildableItems,
+    buildTag,
+  });
   await copyProjectInstructionsIfNeeded(projectInstructionsChanged);
   await fs.writeFile(outputFile, `${bundle}\n`, 'utf8');
   await fs.writeFile(
@@ -436,7 +453,7 @@ async function main() {
     console.log('Upload these files to the ChatGPT Project:');
 
     for (const item of changedBuildableItems) {
-      console.log(`- ${toUploadPath(item.file)}`);
+      console.log(`- ${toUploadPath(item.file, buildTag)}`);
     }
   } else {
     console.log('No changed source files need to be uploaded.');

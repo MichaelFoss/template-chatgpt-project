@@ -1,6 +1,11 @@
+import { execFile } from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { promisify } from 'node:util';
 import matter from 'gray-matter';
+
+const execFileAsync = promisify(execFile);
+const buildTagPrefix = 'build-';
 
 const projectInstructionsPath = path.resolve(
   'instructions',
@@ -31,6 +36,44 @@ async function validateRepositoryRoot() {
 
     process.exit(1);
   }
+}
+
+function parseBuildTag(tag) {
+  const pattern = /^build-\d{4}-\d{2}-\d{2}-(\d{4})$/;
+  const match = tag.match(pattern);
+
+  if (!match) {
+    return null;
+  }
+
+  return Number.parseInt(match[1], 10);
+}
+
+async function runGit(args) {
+  const { stdout } = await execFileAsync('git', args);
+  return stdout.trim();
+}
+
+async function getBuildTags() {
+  const output = await runGit(['tag', '--list', `${buildTagPrefix}*`]);
+
+  return output
+    .split('\n')
+    .map((tag) => tag.trim())
+    .filter(Boolean)
+    .filter((tag) => parseBuildTag(tag) !== null)
+    .sort((a, b) => {
+      const aNumber = parseBuildTag(a) ?? 0;
+      const bNumber = parseBuildTag(b) ?? 0;
+
+      return aNumber - bNumber;
+    });
+}
+
+async function getLatestBuildTag() {
+  const tags = await getBuildTags();
+
+  return tags.at(-1) ?? null;
 }
 
 function demoteAtxHeadings(content, levels = 2) {
@@ -85,11 +128,24 @@ function toProjectPath(filePath) {
   return path.relative(process.cwd(), filePath);
 }
 
-function toUploadPath(filePath) {
+function addBuildTagToFilename(filePath, buildTag) {
+  const directory = path.dirname(filePath);
+  const extension = path.extname(filePath);
+  const basename = path.basename(filePath, extension);
+  const filename = `${basename}.${buildTag}${extension}`;
+
+  if (directory === '.') {
+    return filename;
+  }
+
+  return path.join(directory, filename);
+}
+
+function toUploadPath(filePath, buildTag) {
   return path.join(
     'dist',
     'uploads',
-    path.relative(sourceDir, filePath),
+    addBuildTagToFilename(path.relative(sourceDir, filePath), buildTag),
   );
 }
 
@@ -144,13 +200,18 @@ function buildBundle(included) {
     .trimEnd();
 }
 
-function buildUploadInstructions(included) {
-  const uploadPaths = included.map((item) => toUploadPath(item.file));
+function buildUploadInstructions(included, latestBuildTag) {
+  const uploadPaths = included.map((item) =>
+    toUploadPath(item.file, item.buildTag ?? latestBuildTag),
+  );
 
   return [
     '# Upload Instructions',
     '',
     'Regenerated without creating a new build tag.',
+    latestBuildTag
+      ? `Latest build tag: \`${latestBuildTag}\``
+      : 'No build tags exist yet.',
     '',
     '## Required Human Action',
     '',
@@ -178,7 +239,7 @@ function buildUploadInstructions(included) {
     '',
     '## Notes',
     '',
-    '- This script does not create or inspect `build-*` Git tags.',
+    '- This script inspects existing `build-*` Git tags but does not create new ones.',
     '- Use `yarn build` for normal upload checkpoint creation.',
     '- Use this command only to restore missing generated artifacts.',
   ]
@@ -186,12 +247,66 @@ function buildUploadInstructions(included) {
     .trimEnd();
 }
 
-async function copyUploadFiles(items) {
+async function getLastChangedBuildTag(filePath, latestBuildTag) {
+  const tags = await getBuildTags();
+
+  if (tags.length === 0) {
+    return null;
+  }
+
+  const projectPath = toProjectPath(filePath);
+
+  for (const tag of tags.toReversed()) {
+    if (tag === tags[0]) {
+      return tag;
+    }
+
+    const tagIndex = tags.indexOf(tag);
+    const previousTag = tags[tagIndex - 1];
+    const changedFiles = await runGit([
+      'diff',
+      '--name-only',
+      `${previousTag}..${tag}`,
+      '--',
+      projectPath,
+    ]);
+
+    if (
+      changedFiles
+        .split('\n')
+        .map((line) => line.trim())
+        .includes(projectPath)
+    ) {
+      return tag;
+    }
+  }
+
+  return latestBuildTag;
+}
+
+async function attachBuildTagsToItems(items, latestBuildTag) {
+  const taggedItems = [];
+
+  for (const item of items) {
+    taggedItems.push({
+      ...item,
+      buildTag: await getLastChangedBuildTag(item.file, latestBuildTag),
+    });
+  }
+
+  return taggedItems;
+}
+
+async function copyUploadFiles(items, latestBuildTag) {
   await fs.mkdir(uploadsDir, { recursive: true });
 
   for (const item of items) {
     const relativePath = path.relative(sourceDir, item.file);
-    const destinationPath = path.join(uploadsDir, relativePath);
+    const versionedPath = addBuildTagToFilename(
+      relativePath,
+      item.buildTag ?? latestBuildTag,
+    );
+    const destinationPath = path.join(uploadsDir, versionedPath);
 
     await fs.mkdir(path.dirname(destinationPath), { recursive: true });
     await fs.copyFile(item.file, destinationPath);
@@ -208,14 +323,21 @@ async function copyProjectInstructions() {
 async function main() {
   await validateRepositoryRoot();
 
-  const included = await getBuildableSourceDocuments();
+  const latestBuildTag = await getLatestBuildTag();
+  const included = await attachBuildTagsToItems(
+    await getBuildableSourceDocuments(),
+    latestBuildTag,
+  );
   const bundle = buildBundle(included);
-  const uploadInstructions = buildUploadInstructions(included);
+  const uploadInstructions = buildUploadInstructions(
+    included,
+    latestBuildTag,
+  );
 
   await fs.rm(outputDir, { recursive: true, force: true });
   await fs.mkdir(outputDir, { recursive: true });
 
-  await copyUploadFiles(included);
+  await copyUploadFiles(included, latestBuildTag);
   await copyProjectInstructions();
   await fs.writeFile(outputFile, `${bundle}\n`, 'utf8');
   await fs.writeFile(

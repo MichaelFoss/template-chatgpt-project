@@ -24,8 +24,7 @@ uploaded to the ChatGPT Project.
 
 The actual ChatGPT Project should use:
 
-1. `instructions/project-instructions.copyable.md` as the Project
-   Instructions.
+1. `instructions/project-instructions.md` as the Project Instructions.
 2. Generated files from `dist/uploads/`, created by the build workflow,
    as uploaded source documents.
 
@@ -74,8 +73,8 @@ The build workflow:
 - skips build creation when no upload-impacting files changed
 - copies changed uploadable source files into `dist/uploads/`
 - appends build tags to generated upload filenames
-- copies project instructions into `dist/project-instructions.md` when
-  required
+- copies project instructions into `dist/project-instructions.md` for
+  upload/reference workflows
 - generates `dist/upload-instructions.md` describing exactly what must
   be uploaded to ChatGPT
 - generates `dist/chatgpt-upload-bundle.md` for auditing, portability,
@@ -119,7 +118,6 @@ template are the deployable/runtime projects.
 - `PROJECT.md`
 - `AGENTS.md`
 - `instructions/project-instructions.md`
-- `instructions/project-instructions.copyable.md`
 - `sources/index.md`
 - `sources/current-state.md`
 - `sources/decisions.md`

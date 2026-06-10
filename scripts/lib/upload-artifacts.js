@@ -274,6 +274,7 @@ export async function copyUploadFiles({ items, getBuildTag }) {
 }
 
 export async function copyProjectInstructions() {
+  await fs.mkdir(outputDir, { recursive: true });
   await fs.copyFile(
     projectInstructionsPath,
     projectInstructionsOutputFile,
@@ -283,7 +284,6 @@ export async function copyProjectInstructions() {
 export async function writeDistArtifacts({
   included,
   uploadInstructions,
-  copyProjectInstructionsFile,
   cleanOutputDir,
   getBuildTag,
 }) {
@@ -298,12 +298,7 @@ export async function writeDistArtifacts({
   await fs.mkdir(uploadsDir, { recursive: true });
 
   await copyUploadFiles({ items: included, getBuildTag });
-
-  if (copyProjectInstructionsFile) {
-    await copyProjectInstructions();
-  } else {
-    await fs.rm(projectInstructionsOutputFile, { force: true });
-  }
+  await copyProjectInstructions();
 
   await fs.writeFile(outputFile, `${bundle}\n`, 'utf8');
   await fs.writeFile(
